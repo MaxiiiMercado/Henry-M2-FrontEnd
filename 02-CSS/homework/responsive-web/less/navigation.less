@@ -1,1 +1,32 @@
 // Código de Nav acá
+@nav-height: 140px;
+
+nav{
+    .default-flex();
+    flex-direction: column;
+    position: fixed;
+    flex-wrap: nowrap;
+    height: @nav-height; 
+    background-color: #DDD;
+    border-bottom: 1px solid #888;
+    h1{
+        margin-top: 30px;
+        font-size: 3.2rem;
+        text-align: center;
+    }
+    ul{
+        display: flex;
+        justify-content: center;
+        li{
+            margin: 20px;
+            font-size: 1.5rem;
+            color: @ebony-clay;
+            font-weight: bold;
+
+            @media @phone{
+                margin: 8px;
+            }
+        }
+
+    }
+}

@@ -30,6 +30,10 @@ var selectorTypeMatcher = function (selector) {
         return 'class';
     else if (selector.includes('.'))
         return 'tag.class';
+    else if (selector.includes('>'))
+        return 'child combinator';
+    else if (selector.includes(' '))
+        return 'descendant combinator';
     else
         return 'tag';
 };
@@ -49,10 +53,32 @@ var matchFunctionMaker = function (selector) {
         matchFunction = element => element.classList.contains(selector.slice(1));
     }
     else if (selectorType === "tag.class") {
-        matchFunction = element => element.tagName.toLowerCase() === selector.slice(0, selector.indexOf('.')) && element.classList.contains(selector.slice(selector.indexOf('.') + 1));
+        matchFunction = element => {
+            const [tagN, classN] = selector.split('.');
+            return matchFunctionMaker(tagN.toLowerCase())(element) && matchFunctionMaker(`.${classN}`.toLowerCase())(element);
+        }
     }
-    else {
+    else if (selectorType === "tag") {
         matchFunction = element => element.tagName.toLowerCase() === selector;
+    }
+    else if (selectorType === "child combinator") {
+        matchFunction = element => {
+            const [tagP, tagC] = selector.split(' > ');
+            return matchFunctionMaker(tagP.toLowerCase())(element.parentNode) && matchFunctionMaker(tagC.toLowerCase())(element);
+        }
+    }
+    else if (selectorType === "descendant combinator") {
+        matchFunction = element => {
+            const [tagP, tagC] = selector.split(' ');
+            if (tagC === element.tagName.toLowerCase()){
+                while (element.parentElement.nodeName.toLowerCase() !== 'html'){
+                    if (element.parentElement.nodeName.toLowerCase() === tagP)
+                        return true;
+                    element = element.parentElement;
+                }
+            }
+            return false;
+        }
     }
     return matchFunction;
 };

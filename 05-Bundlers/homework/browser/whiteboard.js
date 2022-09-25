@@ -1,14 +1,21 @@
-(function () {
+//(function () {
 
-  window.whiteboard = new window.EventEmitter();
+//window.whiteboard = new window.EventEmitter();
 
-  // Ultimately, the color of our stroke;
-  var color;
+var EventEmitter = require('./event-emitter');
+var whiteboard = new EventEmitter();
 
-  // The color selection elements on the DOM.
-  var colorElements = [].slice.call(document.querySelectorAll('.marker'));
+//ES6
+//import EventEmitter from './event-emitter';
+//export var whiteboard = new EventEmitter();
 
-  colorElements.forEach(function (el) {
+// Ultimately, the color of our stroke;
+var color;
+
+// The color selection elements on the DOM.
+var colorElements = [].slice.call(document.querySelectorAll('.marker'));
+
+colorElements.forEach(function (el) {
 
     // Set the background color of this element
     // to its id (purple, red, blue, etc).
@@ -23,13 +30,13 @@
         this.classList.add('selected');
     });
 
-  });
+});
 
-  var canvas = document.getElementById('paint');
+var canvas = document.getElementById('paint');
 
-  var ctx = canvas.getContext('2d')
+var ctx = canvas.getContext('2d')
 
-  function resize() {
+function resize() {
     // Unscale the canvas (if it was previously scaled)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
@@ -42,14 +49,14 @@
     var w = canvas.clientWidth * pixelRatio,
         h = canvas.clientHeight * pixelRatio;
     if (w !== canvas.width || h !== canvas.height) {
-      // Resizing the canvas destroys the current content.
-      // So, save it...
-      var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+        // Resizing the canvas destroys the current content.
+        // So, save it...
+        var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 
-      canvas.width = w; canvas.height = h;
+        canvas.width = w; canvas.height = h;
 
-      // ...then restore it.
-      ctx.putImageData(imgData, 0, 0)
+        // ...then restore it.
+        ctx.putImageData(imgData, 0, 0)
     }
 
     // Scale the canvas' internal coordinate system by the device pixel
@@ -60,27 +67,27 @@
     ctx.lineWidth = 5
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
-  }
+}
 
-  resize();
-  window.addEventListener('resize', resize);
+resize();
+window.addEventListener('resize', resize);
 
-  var currentMousePosition = { x: 0, y: 0 };
-  var lastMousePosition = { x: 0, y: 0 };
+var currentMousePosition = { x: 0, y: 0 };
+var lastMousePosition = { x: 0, y: 0 };
 
-  var drawing = false;
+var drawing = false;
 
-  canvas.addEventListener('mousedown', function (e) {
+canvas.addEventListener('mousedown', function (e) {
     drawing = true;
     currentMousePosition.x = e.pageX - this.offsetLeft;
     currentMousePosition.y = e.pageY - this.offsetTop;
-  });
+});
 
-  canvas.addEventListener('mouseup', function () {
+canvas.addEventListener('mouseup', function () {
     drawing = false;
-  });
+});
 
-  canvas.addEventListener('mousemove', function (e) {
+canvas.addEventListener('mousemove', function (e) {
 
     if (!drawing) return;
 
@@ -92,9 +99,9 @@
 
     whiteboard.draw(lastMousePosition, currentMousePosition, color, true);
 
-  });
+});
 
-  whiteboard.draw = function (start, end, strokeColor, shouldBroadcast) {
+whiteboard.draw = function (start, end, strokeColor, shouldBroadcast) {
 
     // Draw the line between the start and end positions
     // that is colored with the given color.
@@ -108,9 +115,11 @@
     // If shouldBroadcast is truthy, we will emit a draw event to listeners
     // with the start, end and color data.
     if (shouldBroadcast) {
-      whiteboard.emit('draw', start, end, strokeColor);
+        whiteboard.emit('draw', start, end, strokeColor);
     }
 
-  };
+};
 
-})();
+module.exports = whiteboard;
+
+//}) ();

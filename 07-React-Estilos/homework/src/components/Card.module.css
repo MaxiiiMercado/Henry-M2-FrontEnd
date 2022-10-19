@@ -1,0 +1,44 @@
+.cardContainer{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #CCC;
+    border-radius: 5PX;
+    width: 400px;
+    padding: 10px;
+    background-color: #EEE;
+}
+
+.cardContainer span{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cardContainer span button{
+    background-color: #ee1111;
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    width: 35px;
+    height: 35px;
+    
+}
+
+.cardContainer span button:hover{
+    cursor: pointer;
+}
+
+.cardContainer .tempContainer{
+    width: 10px red;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.cardContainer .tempContainer div{
+    width: 35%;
+}
+
+.cardContainer .tempContainer div:last-child{
+    width: 30%;
+}

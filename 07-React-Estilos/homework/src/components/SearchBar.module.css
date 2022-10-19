@@ -1,0 +1,12 @@
+.SearchContainer input{
+    height: 50px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 20px;
+}
+
+.SearchContainer button{
+    height: 50px;
+    border-radius: 5px;
+    padding: 10px;
+}

@@ -1,8 +1,12 @@
 import React from 'react';
 import './Card.css';
+import {Link} from 'react-router-dom'
 
 export default function Card ({min, max, name, img, onClose, id}) {
     return (
+      
+    <Link to={`/City/${id}`} >
+
       <div className="card">
         <div id="closeIcon" className="row">
             <button onClick={onClose} className="btn btn-sm btn-danger">X</button>
@@ -24,5 +28,6 @@ export default function Card ({min, max, name, img, onClose, id}) {
           </div>
         </div>
       </div>
+    </Link>
     );
 };
